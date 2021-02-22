@@ -18,9 +18,13 @@ import com.jwlks.localdblistview.Util.BaseDialog;
 
 public class MainActivity extends AppCompatActivity {
 
+
     BaseDialog baseDialogUserAdd;
     Button buttonNo;
     Button buttonYes;
+
+    /*DB Setting*/
+    private UserSqlOpenHelper helper = null;
 
     /*UserList*/
     UserListViewAdapter userAdapter;
@@ -31,10 +35,16 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+        /*Dialog Setting*/
         baseDialogUserAdd = new BaseDialog(this, R.layout.dialog_user_add);
 
         buttonNo = baseDialogUserAdd.findViewById(R.id.button_no);
         buttonYes = baseDialogUserAdd.findViewById(R.id.button_yes);
+
+
+        /*DB Setting*/
+        helper = new UserSqlOpenHelper(this, "userList.db",null,1);
 
         /*User List Adapter*/
         userAdapter = setUserAdapter(getBaseContext());

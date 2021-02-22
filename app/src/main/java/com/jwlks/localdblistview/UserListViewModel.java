@@ -3,14 +3,12 @@ package com.jwlks.localdblistview;
 import android.graphics.drawable.Drawable;
 
 public class UserListViewModel {
-    private Drawable profile ;
     private String name ;
     private String age ;
     private String date ;
+    private Drawable profile ;
 
-    public void setProfile(Drawable profile) {
-        this.profile = profile ;
-    }
+
     public void setName(String name) {
         this.name = name ;
     }
@@ -18,13 +16,15 @@ public class UserListViewModel {
     public void setAge(String age) {
         this.age = age ;
     }
+
     public void setDate(String date) {
         this.date = date ;
     }
 
-    public Drawable getProfile() {
-        return this.profile ;
+    public void setProfile(Drawable profile) {
+        this.profile = profile ;
     }
+
 
     public String getName() {
         return this.name ;
@@ -36,5 +36,9 @@ public class UserListViewModel {
 
     public String getDate() {
         return this.date ;
+    }
+
+    public Drawable getProfile() {
+        return this.profile ;
     }
 }

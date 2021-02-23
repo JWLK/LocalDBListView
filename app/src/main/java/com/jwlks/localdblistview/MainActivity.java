@@ -4,29 +4,46 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
-import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.ImageButton;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.jwlks.localdblistview.Util.BaseDialog;
+import com.jwlks.localdblistview.Util.showAlert;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
 
+    /*DB Setting*/
+    SQLiteDatabase userDB;
+    UserSqlOpenHelper helper = null;
 
+    /*User Dialog*/
     BaseDialog baseDialogUserAdd;
     Button buttonNo;
     Button buttonYes;
-
-    /*DB Setting*/
-    private UserSqlOpenHelper helper = null;
+    EditText editTextUserName;
+    EditText editTextUserAge;
 
     /*UserList*/
+    UserListViewModel userListViewModel;
     UserListViewAdapter userAdapter;
     ListView userListView;
 
@@ -35,16 +52,18 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        /*DB Setting*/
+        helper = new UserSqlOpenHelper(this, "userList.db",null,1);
+        userDB = helper.getWritableDatabase();
+        helper.SearchUserListDB();
 
         /*Dialog Setting*/
         baseDialogUserAdd = new BaseDialog(this, R.layout.dialog_user_add);
-
         buttonNo = baseDialogUserAdd.findViewById(R.id.button_no);
         buttonYes = baseDialogUserAdd.findViewById(R.id.button_yes);
+        editTextUserName = baseDialogUserAdd.findViewById(R.id.edit_user_name);
+        editTextUserAge = baseDialogUserAdd.findViewById(R.id.edit_user_age);
 
-
-        /*DB Setting*/
-        helper = new UserSqlOpenHelper(this, "userList.db",null,1);
 
         /*User List Adapter*/
         userAdapter = setUserAdapter(getBaseContext());
@@ -52,25 +71,24 @@ public class MainActivity extends AppCompatActivity {
         listViewHeightSet(userAdapter, userListView);
 
 
-        buttonEvent();
+        buttonEvent(getBaseContext());
 
     }
 
-    void buttonEvent() {
+    void buttonEvent(Context context) {
         Button buttonUserAdd = findViewById(R.id.button_UserPanel_addUser);
         buttonUserAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                show_dialogView_UserAdd();
+                show_dialogView_UserAdd(context);
             }
         });
     }
 
 
     /*Dialog Setting*/
-    void show_dialogView_UserAdd(){
+    void show_dialogView_UserAdd(Context context){
         baseDialogUserAdd.show();
-
         buttonNo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -82,6 +100,37 @@ public class MainActivity extends AppCompatActivity {
         buttonYes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                long now = System.currentTimeMillis();
+                Date date = new Date(now);
+                SimpleDateFormat mFormat = new SimpleDateFormat("yyyy.MM.dd");
+
+                String userName = editTextUserName.getText().toString();
+                String userAge = editTextUserAge.getText().toString();
+                String userDate = mFormat.format(date);
+
+                userListViewModel = new UserListViewModel();
+                userListViewModel.setName(userName);
+                userListViewModel.setAge(userAge);
+                userListViewModel.setDate(userDate);
+                userListViewModel.setProfile(ContextCompat.getDrawable(context, R.drawable.ic_user));
+
+                if(userAdapter.getCount() < 5){
+                    if(editTextUserName.getText().toString().equals("") || editTextUserName.getText().toString() == null){
+                        Toast.makeText(MainActivity.this, "Please Input User Name", Toast.LENGTH_SHORT).show();
+                    } else if (editTextUserAge.getText().toString().equals("") || editTextUserAge.getText().toString() == null){
+                        Toast.makeText(MainActivity.this, "Please Input User Age", Toast.LENGTH_SHORT).show();
+                    } else {
+                        helper.InsertUserListDB(userListViewModel);
+                        userAdapter.addModel(userListViewModel);
+                        userAdapter.notifyDataSetChanged();
+                        listViewHeightSet(userAdapter, userListView);
+                    }
+
+                } else {
+                     showAlert.set(MainActivity.this, "사용자를 추가할 수 없습니다.", "최대 등록 할 수 있는 사용자는 5명 입니다.");
+                }
+
+
 
                 baseDialogUserAdd.dismiss(); // 다이얼로그 닫기
             }
@@ -90,29 +139,45 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
     /*Liset View Adapter*/
     UserListViewAdapter setUserAdapter(Context context){
         UserListViewAdapter userListViewAdapter = new UserListViewAdapter();
-        userListViewAdapter.addItem(ContextCompat.getDrawable(context,
-                R.drawable.ic_user),
-                "David",
-                "21",
-                "2021.01.01");
-        userListViewAdapter.addItem(ContextCompat.getDrawable(context,
-                R.drawable.ic_user),
-                "Paul",
-                "23",
-                "2021.01.03");
-        userListViewAdapter.addItem(ContextCompat.getDrawable(context,
-                R.drawable.ic_user),
-                "Lay",
-                "25",
-                "2021.01.21");
+        Cursor cursor = null;
+        String userId;
+        String userName;
+        String userAge;
+        String userDate;
+        String userProfile;
+
+        try {
+            cursor = userDB.query("USER_TABLE", null, null, null, null, null, null);
+            if (cursor != null) {
+                while (cursor.moveToNext()) {
+                    userId = cursor.getString(cursor.getColumnIndex("USER_ID"));
+                    userName = cursor.getString(cursor.getColumnIndex("USER_NAME"));
+                    userAge = cursor.getString(cursor.getColumnIndex("USER_AGE"));
+                    userDate = cursor.getString(cursor.getColumnIndex("USER_DATE"));
+                    userProfile = cursor.getString(cursor.getColumnIndex("USER_PROFILE"));
+                    Drawable userProfileDrawable = ContextCompat.getDrawable(context, R.drawable.ic_user);
+                    userListViewAdapter.addItem(
+                            userName,
+                            userAge,
+                            userDate,
+                            userProfileDrawable
+                    );
+                }
+            }
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+
+
         return userListViewAdapter;
     }
-    /*List View Setting */
 
+    /*List View Setting */
     ListView setListViewUser(String part, UserListViewAdapter userListViewAdapter, Activity activity) {
         ListView listView;
         String layoutId = "list_view_"+part;
@@ -134,5 +199,7 @@ public class MainActivity extends AppCompatActivity {
         ViewGroup.LayoutParams params = listView.getLayoutParams();
         params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
         listView.setLayoutParams(params);
+
     }
+
 }

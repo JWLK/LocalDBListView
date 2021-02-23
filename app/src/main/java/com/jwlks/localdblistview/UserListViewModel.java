@@ -8,7 +8,9 @@ public class UserListViewModel {
     private String date ;
     private Drawable profile ;
 
-
+    public void setProfile(Drawable profile) {
+        this.profile = profile ;
+    }
     public void setName(String name) {
         this.name = name ;
     }
@@ -16,13 +18,8 @@ public class UserListViewModel {
     public void setAge(String age) {
         this.age = age ;
     }
-
     public void setDate(String date) {
         this.date = date ;
-    }
-
-    public void setProfile(Drawable profile) {
-        this.profile = profile ;
     }
 
 

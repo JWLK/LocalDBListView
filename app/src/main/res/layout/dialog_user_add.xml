@@ -74,6 +74,7 @@
             android:textStyle="normal"/>
 
         <EditText
+            android:id="@+id/edit_user_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Name"
@@ -98,8 +99,10 @@
             android:textStyle="normal"/>
 
         <EditText
+            android:id="@+id/edit_user_age"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:inputType="numberDecimal"
             android:hint="Years"
             android:textColor="@color/black"/>
 

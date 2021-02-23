@@ -1,8 +1,11 @@
 package com.jwlks.localdblistview;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 
@@ -28,22 +31,53 @@ public class UserSqlOpenHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-
-    }
-
-    @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
-    }
-
-    public void CreateTable() {
         String CREATE_USER_TABLE =
                 "create table if not exists " + USER_TABLE + "(" +
-                        USER_ID + "INTEGER PRIMARY KEY AUTOINCREMENT," +
+                        USER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                         USER_NAME + " TEXT NOT NULL , " +
                         USER_AGE + " TEXT NOT NULL , " +
                         USER_DATE + " TEXT NOT NULL , " +
                         USER_PROFILE + " TEXT NOT NULL " + ");";
-        getWritableDatabase().execSQL(CREATE_USER_TABLE);
+        db.execSQL(CREATE_USER_TABLE);
+    }
+
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        String createQuery = "DROP TABLE IF EXISTS " + USER_TABLE + ";";
+        db.execSQL(createQuery);
+    }
+
+
+    public void InsertUserListDB(UserListViewModel model){
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("USER_NAME", model.getName());
+        contentValues.put("USER_AGE", model.getAge());
+        contentValues.put("USER_DATE", model.getDate());
+        contentValues.put("USER_PROFILE", model.getProfile().toString());
+        long createUserId = getWritableDatabase().insert("USER_TABLE", null, contentValues);
+        Log.d("DB_Insert", "id : " + createUserId);
+    }
+
+    public void SearchUserListDB() {
+        Cursor cursor = null;
+
+        try {
+            cursor = getWritableDatabase().query("USER_TABLE", null, null, null, null, null, null);
+            if (cursor != null) {
+                while (cursor.moveToNext()) {
+                    String userId = cursor.getString(cursor.getColumnIndex("USER_ID"));
+                    String userName = cursor.getString(cursor.getColumnIndex("USER_NAME"));
+                    String userAge = cursor.getString(cursor.getColumnIndex("USER_AGE"));
+                    String userDate = cursor.getString(cursor.getColumnIndex("USER_DATE"));
+                    String userProfile = cursor.getString(cursor.getColumnIndex("USER_PROFILE"));
+
+                    Log.d("DBSearch", "USER_ID: " + userId + ", USER_NAME: " + userName + ", USER_AGE: " + userAge + ", USER_PROFILE: " + userProfile + ", USER_DATE: " + userDate);
+                }
+            }
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
     }
 }

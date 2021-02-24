@@ -10,135 +10,76 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <!-- Main Contents Section -->
+
+        <!-- User Info -->
         <LinearLayout
-            android:orientation="vertical"
+            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="60dp"
+            android:gravity="center"
+            android:layout_marginVertical="10dp"
+            android:layout_marginHorizontal="15dp"
+            android:paddingVertical="8dp"
+            android:paddingHorizontal="10dp"
+            android:background="@drawable/layout_round"
+            android:elevation="3dp">
 
-            <!--Account List Titie View-->
             <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:paddingHorizontal="20dp"
-                android:gravity="center"
-                android:background="@color/white">
-
-                <TextView
-                    android:id="@+id/textView_UserPanel_title"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="User List"
-                    android:textSize="18dp"
-                    android:textColor="@color/colorDark333"
-                    android:textAlignment="textStart"
-                    android:textStyle="bold"/>
-
-                <Button
-                    android:id="@+id/button_UserPanel_addUser"
-                    android:layout_width="80dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:background="@color/colorFadeGray"
-                    android:text="Add User"
-                    android:textSize="12dp"
-                    android:textColor="@color/black"
-                    android:textStyle="bold"/>
-
-            </LinearLayout>
-
-
-            <!--Account List View-->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingHorizontal="15dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="50dp"
-                android:gravity="center"
-                android:background="@color/white">
-
-                <ListView
-                    android:id="@+id/list_view_user"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:scrollbars="none"/>
-
-            </LinearLayout>
-
-
-
-
-
-            <!--Account List Not Added-->
-            <LinearLayout
-                android:visibility="gone"
                 android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingHorizontal="20dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="50dp"
-                android:gravity="center"
-                android:background="@color/white">
-
-                <FrameLayout
-                    android:id="@+id/frame_UserPanel_addUser"
-                    android:layout_width="match_parent"
-                    android:layout_height="120dp"
-                    android:background="@drawable/dotted_line_border_style00">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:text="+ User registration is required."
-                        android:textSize="14dp"
-                        android:textColor="@color/colorGrayDDD"
-                        android:textStyle="bold"/>
-
-                </FrameLayout>
-            </LinearLayout>
-
-            <!--Example Section-->
-            <LinearLayout
-                android:visibility="gone"
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:paddingHorizontal="25dp"
-                android:gravity="center"
-                android:background="@color/white">
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:gravity="center|end">
 
                 <TextView
-                    android:id="@+id/textView_init_preferences_clear"
-                    android:layout_width="0dp"
+                    android:id="@+id/user_info"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="설정 초기화"
-                    android:textSize="18dp"
-                    android:textColor="@color/colorDark333"
-                    android:textAlignment="textStart"
-                    android:textStyle="bold"/>
+                    android:text="@string/user_info"
+                    android:textColor="@color/blue_400"
+                    android:textSize="12dp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="3dp"/>
 
-                <Button
-                    android:id="@+id/button_init_preferences_clear"
-                    android:layout_width="100dp"
-                    android:layout_height="match_parent"
-                    android:layout_margin="10dp"
-                    android:background="@color/green_200"
-                    android:text="초기화"
-                    android:textSize="16dp"
-                    android:textColor="@color/green_700"
+                <TextView
+                    android:id="@+id/user_contents"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/user_registr"
+                    android:textColor="@color/green_400"
+                    android:textSize="18dp"
                     android:textStyle="bold"/>
 
             </LinearLayout>
 
+
+            <LinearLayout
+                android:id="@+id/button_user_manager"
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center|end">
+
+                <TextView
+                    android:id="@+id/user_manger"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical|end"
+                    android:text="@string/user_manager"
+                    android:textColor="@color/green_300"
+                    android:textSize="16dp"
+                    android:textStyle="bold"/>
+
+                <ImageButton
+                    android:layout_width="15dp"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_baseline_arrow_right_24"
+                    android:background="@color/transparent"/>
+
+            </LinearLayout>
 
         </LinearLayout>
+
     </ScrollView>
 
 

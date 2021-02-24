@@ -48,7 +48,7 @@ public class UserSqlOpenHelper extends SQLiteOpenHelper {
     }
 
 
-    public void InsertUserListDB(UserListViewModel model){
+    public void InsertUserListDB(UserListViewModel model) {
         ContentValues contentValues = new ContentValues();
         contentValues.put("USER_NAME", model.getName());
         contentValues.put("USER_AGE", model.getAge());
@@ -56,6 +56,18 @@ public class UserSqlOpenHelper extends SQLiteOpenHelper {
         contentValues.put("USER_PROFILE", model.getProfile().toString());
         long createUserId = getWritableDatabase().insert("USER_TABLE", null, contentValues);
         Log.d("DB_Insert", "id : " + createUserId);
+    }
+
+    public void UpdateUserListDB(UserListViewModel model, String position) {
+        String updateUserID[] = { position };
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("USER_NAME", model.getName());
+        contentValues.put("USER_AGE", model.getAge());
+        contentValues.put("USER_DATE", model.getDate());
+        contentValues.put("USER_PROFILE", model.getProfile().toString());
+        long createUserId = getWritableDatabase().update("USER_TABLE", contentValues, "USER_ID = ?", updateUserID);
+        Log.d("DB_Update", "id : " + createUserId);
     }
 
     public void SearchUserListDB() {

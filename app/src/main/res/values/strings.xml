@@ -1,3 +1,74 @@
 <resources>
     <string name="app_name">LocalDBListView</string>
+
+    <string name="app_copy_right">Copyright 2021. HUBIOTEC. All rights reserved.</string>
+    <string name="app_lang_select">Please Select Start Language</string>
+
+    <!-- Language Select Menu -->
+    <string name="korean">한국어</string>
+    <string name="english">English</string>
+    <string name="japanese">日本語</string>
+
+    <!-- App String -->
+    <string name="hello">Hello</string>
+
+
+    <!-- Menu String -->
+    <string name="menu_home">홈</string>
+    <string name="menu_setting">설정</string>
+
+
+    <!-- Setting String -->
+    <string name="confirm">확인</string>
+    <string name="select">선택</string>
+    <string name="cancel">취소</string>
+    <string name="setting_title_lang_dialog">사용하고자 하는 언어를 선택해 주세요.</string>
+    <string name="setting_title_lang_change">사용중 언어 변경</string>
+    <string name="setting_button_lang_change">언어 선택</string>
+    <string name="setting_title_clear">설정 초기화</string>
+    <string name="setting_button_clear">초기화</string>
+
+    <!-- Setting String -->
+    <string name="dialog_service_ready">서비스 준비 중입니다.</string>
+
+    <!-- Main Section -->
+    <string name="device_info">디바이스 정보 </string>
+    <string name="device_connection_needed">디바이스 연결이 필요합니다.</string>
+    <string name="device_manager">기기관리</string>
+    <string name="device_connection_complete">비접촉온도계 01 (HLJP-02)</string>
+
+    <string name="temp_info_ready">측정 준비</string>
+    <string name="temp_info_normal">정상 체온</string>
+    <string name="temp_info_mild">미열</string>
+    <string name="temp_info_high">고열</string>
+    <string name="temp_info_measuring">측정 중</string>
+    <string name="temp_info_previous">이전 측정온도</string>
+
+    <string name="user_info">사용자 정보</string>
+    <string name="user_registr">사용자 등록이 필요합니다.</string>
+    <string name="user_manager">사용자 관리</string>
+
+
+    <!-- BLE COntrol -->
+    <string name="ble_not_supported">BLE is not supported</string>
+    <string name="label_data">Data:</string>
+    <string name="label_device_address">Device address:</string>
+    <string name="label_state">State:</string>
+    <string name="init_data">00.0</string>
+    <string name="no_data">No data</string>
+    <string name="connected">Connected</string>
+    <string name="disconnected">Disconnected</string>
+    <string name="title_devices">BLE Device Scan</string>
+    <string name="error_bluetooth_not_supported">Bluetooth not supported.</string>
+
+    <string name="unknown_device">Unknown device</string>
+    <string name="unknown_characteristic">Unknown characteristic</string>
+    <string name="unknown_service">Unknown service</string>
+
+    <!-- Menu items -->
+    <string name="menu_connect">Connect</string>
+    <string name="menu_disconnect">Disconnect</string>
+    <string name="menu_scan">Scan</string>
+    <string name="menu_stop">Stop</string>
+
 </resources>

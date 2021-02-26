@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -80,6 +81,18 @@ public class UserPanel extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 show_dialogView_UserAdd(context);
+            }
+        });
+
+        Button buttonUserDeselect = findViewById(R.id.button_UserPanel_deselect);
+        buttonUserDeselect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SharedPreferences.Editor editor = MainActivity.sharedPreferences.edit();
+                editor.putBoolean("USER_ENABLE", false);
+                editor.apply();
+                MainActivity.checkUserSetting = MainActivity.sharedPreferences.getBoolean("USER_ENABLE", false);
+                Log.d("USER_ENABLE", "Value : " + MainActivity.checkUserSetting);
             }
         });
     }

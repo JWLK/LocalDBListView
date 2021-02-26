@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,7 +38,10 @@ import java.util.Date;
 public class MainActivity extends AppCompatActivity {
 
     public static SharedPreferences sharedPreferences;
-    Boolean checkUserSetting;
+    public static Boolean checkUserSetting;
+    LinearLayout userNotExist;
+    LinearLayout userExist;
+    LinearLayout userExistDataView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +54,11 @@ public class MainActivity extends AppCompatActivity {
 
         Log.d("USER SETTING", "SETTING : " + checkUserSetting);
 
+        userNotExist = findViewById(R.id.user_not_exist);
+        userExist = findViewById(R.id.user_exist);
+        userExistDataView = findViewById(R.id.user_exist_data_view);
+
+
         buttonEvent(getBaseContext());
 
     }
@@ -58,10 +67,16 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         checkUserSetting = sharedPreferences.getBoolean("USER_ENABLE", false);
-        if(checkUserSetting) {
+        if(!checkUserSetting) {
             Log.d("USER_ENABLE", "Value : " + checkUserSetting);
+            userNotExist.setVisibility(View.VISIBLE);
+            userExist.setVisibility(View.GONE);
+            userExistDataView.setVisibility(View.GONE);
         } else {
             Log.d("USER_ENABLE", "Value : " + checkUserSetting);
+            userNotExist.setVisibility(View.GONE);
+            userExist.setVisibility(View.VISIBLE);
+            userExistDataView.setVisibility(View.VISIBLE);
         }
 
     }
@@ -71,11 +86,6 @@ public class MainActivity extends AppCompatActivity {
         buttonUserManager.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putBoolean("USER_ENABLE", false);
-                editor.apply();
-                checkUserSetting = sharedPreferences.getBoolean("USER_ENABLE", false);
-                Log.d("USER_ENABLE", "Value : " + checkUserSetting);
                 startActivity(new Intent(getApplication(), UserPanel.class)); //로딩이 끝난 후, MainActivity 이동
             }
         });

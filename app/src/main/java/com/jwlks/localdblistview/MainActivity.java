@@ -42,6 +42,9 @@ public class MainActivity extends AppCompatActivity {
     LinearLayout userNotExist;
     LinearLayout userExist;
     LinearLayout userExistDataView;
+    TextView textViewUserName;
+    TextView textViewUserAge;
+    TextView textViewUserDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,9 +57,13 @@ public class MainActivity extends AppCompatActivity {
 
         Log.d("USER SETTING", "SETTING : " + checkUserSetting);
 
+        /*User Panel*/
         userNotExist = findViewById(R.id.user_not_exist);
         userExist = findViewById(R.id.user_exist);
         userExistDataView = findViewById(R.id.user_exist_data_view);
+        textViewUserName = findViewById(R.id.user_name);
+        textViewUserAge = findViewById(R.id.user_age);
+        textViewUserDate = findViewById(R.id.user_regist_date);
 
 
         buttonEvent(getBaseContext());
@@ -72,6 +79,8 @@ public class MainActivity extends AppCompatActivity {
             userNotExist.setVisibility(View.VISIBLE);
             userExist.setVisibility(View.GONE);
             userExistDataView.setVisibility(View.GONE);
+
+            //textViewUserName.setText(SharedPreferences.getString("USER_NAME"));
         } else {
             Log.d("USER_ENABLE", "Value : " + checkUserSetting);
             userNotExist.setVisibility(View.GONE);

@@ -9,13 +9,14 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <!-- Main Contents Section -->
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <!--Account List Titie View-->
+            <!--Account List Title View-->
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
@@ -66,6 +67,8 @@
 
             <!--Account List View-->
             <LinearLayout
+                android:id="@+id/Linear_UserPanel_listView"
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingHorizontal="15dp"
@@ -82,13 +85,10 @@
 
             </LinearLayout>
 
-
-
-
-
             <!--Account List Not Added-->
             <LinearLayout
-                android:visibility="gone"
+                android:id="@+id/Linear_UserPanel_addView"
+                android:visibility="visible"
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

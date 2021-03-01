@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -45,6 +46,11 @@ public class UserPanel extends AppCompatActivity {
     UserListViewAdapter userAdapter;
     ListView userListView;
 
+    LinearLayout userNotExistAddPanel;
+    LinearLayout userExistListView;
+    Boolean isUserExist = false;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,6 +72,8 @@ public class UserPanel extends AppCompatActivity {
 
 
         /*User List Adapter*/
+        userNotExistAddPanel = findViewById(R.id.Linear_UserPanel_addView);
+        userExistListView = findViewById(R.id.Linear_UserPanel_listView);
         userAdapter = setUserAdapter(getBaseContext());
         userListView = setListViewUser("user", userAdapter, (Activity)this);
         listViewHeightSet(userAdapter, userListView);
@@ -90,6 +98,7 @@ public class UserPanel extends AppCompatActivity {
             public void onClick(View v) {
                 SharedPreferences.Editor editor = MainActivity.sharedPreferences.edit();
                 editor.putBoolean("USER_ENABLE", false);
+                editor.putInt("USER_ID", -1);
                 editor.apply();
                 MainActivity.checkUserSetting = MainActivity.sharedPreferences.getBoolean("USER_ENABLE", false);
                 Log.d("USER_ENABLE", "Value : " + MainActivity.checkUserSetting);
@@ -146,8 +155,19 @@ public class UserPanel extends AppCompatActivity {
 
     }
 
+    /*Lise View Control Function*/
+    void UserListViewShowControl(Boolean isExist) {
+        if(!isExist) {
+            userNotExistAddPanel.setVisibility(View.VISIBLE);
+            userExistListView.setVisibility(View.GONE);
+        } else {
+            userNotExistAddPanel.setVisibility(View.GONE);
+            userExistListView.setVisibility(View.VISIBLE);
+        }
+    }
 
-    /*Liset View Adapter*/
+
+    /*List View Adapter*/
     UserListViewAdapter setUserAdapter(Context context){
         UserListViewAdapter userListViewAdapter = new UserListViewAdapter(context);
         Cursor cursor = null;
@@ -160,6 +180,7 @@ public class UserPanel extends AppCompatActivity {
         try {
             cursor = userDB.query("USER_TABLE", null, null, null, null, null, null);
             if (cursor != null) {
+                isUserExist = true;
                 while (cursor.moveToNext()) {
                     userId = cursor.getString(cursor.getColumnIndex("USER_ID"));
                     userName = cursor.getString(cursor.getColumnIndex("USER_NAME"));
@@ -174,7 +195,11 @@ public class UserPanel extends AppCompatActivity {
                             userProfileDrawable
                     );
                 }
+            } else {
+                isUserExist = false;
             }
+            UserListViewShowControl(isUserExist);
+
         } finally {
             if (cursor != null) {
                 cursor.close();

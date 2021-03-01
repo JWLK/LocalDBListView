@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -77,6 +78,7 @@ public class UserListViewAdapter extends BaseAdapter {
         TextView name = (TextView) view.findViewById(R.id.user_name) ;
         TextView age = (TextView) view.findViewById(R.id.user_age) ;
         TextView date = (TextView) view.findViewById(R.id.user_regist_date) ;
+        FrameLayout background = view.findViewById(R.id.list_background);
 
         // Data Set(listViewItemList)에서 position에 위치한 데이터 참조 획득
         UserListViewModel userListViewModel = userListViewModelArrayList.get(position);
@@ -86,6 +88,10 @@ public class UserListViewAdapter extends BaseAdapter {
         name.setText(userListViewModel.getName());
         age.setText(userListViewModel.getAge());
         date.setText(userListViewModel.getDate());
+
+        if(MainActivity.sharedPreferences.getInt("USER_ID",0) == position){
+            background.setBackground(ContextCompat.getDrawable(context, R.drawable.dotted_line_border_style00));
+        }
 
         // 화면에 클릭할 수 있는 버튼 이벤트 정의
         Button buttonSelect = view.findViewById(R.id.button_UserPanel_select);
@@ -132,11 +138,12 @@ public class UserListViewAdapter extends BaseAdapter {
             //*SharePreference
             SharedPreferences.Editor editor = MainActivity.sharedPreferences.edit();
             editor.putBoolean("USER_ENABLE", true);
+            editor.putInt("USER_ID", position);
             editor.putString("USER_NAME", userListViewModel.getName());
             editor.putString("USER_AGE", userListViewModel.getAge());
             editor.putString("USER_DATE", userListViewModel.getDate());
             editor.apply();
-            ((Activity)context).finish();
+            //((Activity)context).finish();
 
         }
     };

@@ -1,7 +1,9 @@
 package com.jwlks.localdblistview;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
@@ -190,18 +192,35 @@ public class UserListViewAdapter extends BaseAdapter {
             Context context = v.getContext();
             int position = Integer.parseInt( (v.getTag().toString()) );
             UserListViewModel userListViewModel = userListViewModelArrayList.get(position);
-            // Toast.makeText(context, "Position Edit : " + position , Toast.LENGTH_SHORT).show();
-            helper.DeleteUserListDB(userListViewModel.getId());
-            userListViewModelArrayList.remove(position);
-            if(MainActivity.sharedPreferences.getInt("USER_POSITION",0) == position){
-                SharedPreferences.Editor editor = MainActivity.sharedPreferences.edit();
-                editor.putBoolean("USER_ENABLE", false);
-                editor.putInt("USER_POSITION", -1);
-                editor.apply();
-                MainActivity.checkUserSetting = MainActivity.sharedPreferences.getBoolean("USER_ENABLE", false);
-                Log.d("USER_ENABLE", "Value : " + MainActivity.checkUserSetting);
-            }
-            notifyDataSetChanged();
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            builder.setTitle("Delete User");
+            builder.setMessage("Are you sure you want to delete the user?")
+                    .setCancelable(false)
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // Toast.makeText(context, "Position Edit : " + position , Toast.LENGTH_SHORT).show();
+                            helper.DeleteUserListDB(userListViewModel.getId());
+                            userListViewModelArrayList.remove(position);
+                            if(MainActivity.sharedPreferences.getInt("USER_POSITION",0) == position){
+                                SharedPreferences.Editor editor = MainActivity.sharedPreferences.edit();
+                                editor.putBoolean("USER_ENABLE", false);
+                                editor.putInt("USER_POSITION", -1);
+                                editor.apply();
+                                MainActivity.checkUserSetting = MainActivity.sharedPreferences.getBoolean("USER_ENABLE", false);
+                                Log.d("USER_ENABLE", "Value : " + MainActivity.checkUserSetting);
+                            }
+                            notifyDataSetChanged();
+                            dialog.dismiss();
+                        }
+                    })
+                    .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.dismiss();
+                        }
+                    });
+            AlertDialog alert = builder.create();
+            alert.show();
         }
     };
 

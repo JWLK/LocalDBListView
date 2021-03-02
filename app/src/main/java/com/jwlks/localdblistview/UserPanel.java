@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -78,13 +81,12 @@ public class UserPanel extends AppCompatActivity {
         userListView = setListViewUser("user", userAdapter, (Activity)this);
         listViewHeightSet(userAdapter, userListView);
 
-
         buttonEvent(getBaseContext());
 
     }
 
     void buttonEvent(Context context) {
-        Button buttonUserAdd = findViewById(R.id.button_UserPanel_addUser);
+        ImageButton buttonUserAdd = findViewById(R.id.button_UserPanel_addUser);
         buttonUserAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -92,18 +94,25 @@ public class UserPanel extends AppCompatActivity {
             }
         });
 
-        Button buttonUserEdit = findViewById(R.id.button_UserPanel_editUser);
+        ImageButton buttonUserEdit = findViewById(R.id.button_UserPanel_editUser);
         buttonUserEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SharedPreferences.Editor editor = MainActivity.sharedPreferences.edit();
-                if(!MainActivity.sharedPreferences.getBoolean("USER_MODE",false)) {
-                    editor.putBoolean("USER_MODE", true);
+                if(userAdapter.getCount() == 0){
+                    showAlert.set(UserPanel.this, "Please add users", "It can be used after user registration.");
                 } else {
-                    editor.putBoolean("USER_MODE", false);
+                    SharedPreferences.Editor editor = MainActivity.sharedPreferences.edit();
+                    if(!MainActivity.sharedPreferences.getBoolean("USER_MODE",false)) {
+                        editor.putBoolean("USER_MODE", true);
+                        buttonUserEdit.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_icon_awesome_user_cog_selected));
+                    } else {
+                        editor.putBoolean("USER_MODE", false);
+                        buttonUserEdit.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_icon_awesome_user_cog));
+                    }
+                    editor.apply();
+                    userAdapter.notifyDataSetChanged();
                 }
-                editor.apply();
-                userAdapter.notifyDataSetChanged();
+
             }
         });
 
@@ -137,6 +146,7 @@ public class UserPanel extends AppCompatActivity {
         buttonYes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 long now = System.currentTimeMillis();
                 Date date = new Date(now);
                 SimpleDateFormat mFormat = new SimpleDateFormat("yyyy.MM.dd");
@@ -157,6 +167,7 @@ public class UserPanel extends AppCompatActivity {
                     editor.putInt("USER_POSITION", -1);
                     editor.apply();
                 }
+
                 if(userAdapter.getCount() < 5){
                     if(editTextUserName.getText().toString().equals("") || editTextUserName.getText().toString() == null){
                         Toast.makeText(context, "Please Input User Name", Toast.LENGTH_SHORT).show();

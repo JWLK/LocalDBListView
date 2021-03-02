@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -192,6 +193,14 @@ public class UserListViewAdapter extends BaseAdapter {
             // Toast.makeText(context, "Position Edit : " + position , Toast.LENGTH_SHORT).show();
             helper.DeleteUserListDB(userListViewModel.getId());
             userListViewModelArrayList.remove(position);
+            if(MainActivity.sharedPreferences.getInt("USER_POSITION",0) == position){
+                SharedPreferences.Editor editor = MainActivity.sharedPreferences.edit();
+                editor.putBoolean("USER_ENABLE", false);
+                editor.putInt("USER_POSITION", -1);
+                editor.apply();
+                MainActivity.checkUserSetting = MainActivity.sharedPreferences.getBoolean("USER_ENABLE", false);
+                Log.d("USER_ENABLE", "Value : " + MainActivity.checkUserSetting);
+            }
             notifyDataSetChanged();
         }
     };

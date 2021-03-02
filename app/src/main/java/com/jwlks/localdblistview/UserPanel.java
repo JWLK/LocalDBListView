@@ -113,7 +113,7 @@ public class UserPanel extends AppCompatActivity {
             public void onClick(View v) {
                 SharedPreferences.Editor editor = MainActivity.sharedPreferences.edit();
                 editor.putBoolean("USER_ENABLE", false);
-                editor.putInt("USER_ID", -1);
+                editor.putInt("USER_POSITION", -1);
                 editor.apply();
                 MainActivity.checkUserSetting = MainActivity.sharedPreferences.getBoolean("USER_ENABLE", false);
                 Log.d("USER_ENABLE", "Value : " + MainActivity.checkUserSetting);
@@ -151,6 +151,12 @@ public class UserPanel extends AppCompatActivity {
                 userListViewModel.setDate(userDate);
                 userListViewModel.setProfile(ContextCompat.getDrawable(context, R.drawable.ic_user));
 
+                if(userAdapter.getCount() == 0) {
+                    SharedPreferences.Editor editor = MainActivity.sharedPreferences.edit();
+                    editor.putBoolean("USER_ENABLE", false);
+                    editor.putInt("USER_POSITION", -1);
+                    editor.apply();
+                }
                 if(userAdapter.getCount() < 5){
                     if(editTextUserName.getText().toString().equals("") || editTextUserName.getText().toString() == null){
                         Toast.makeText(context, "Please Input User Name", Toast.LENGTH_SHORT).show();

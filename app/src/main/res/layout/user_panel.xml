@@ -50,6 +50,19 @@
                     android:textStyle="bold"/>
 
                 <Button
+                    android:id="@+id/button_UserPanel_editUser"
+                    android:layout_width="80dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="@color/colorFadeGray"
+                    android:text="EDIT"
+                    android:textSize="12dp"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"/>
+
+                <Button
                     android:id="@+id/button_UserPanel_deselect"
                     android:layout_width="80dp"
                     android:layout_height="match_parent"
@@ -61,6 +74,7 @@
                     android:textSize="12dp"
                     android:textColor="@color/black"
                     android:textStyle="bold"/>
+
 
             </LinearLayout>
 

@@ -2,12 +2,14 @@ package com.jwlks.localdblistview.Util;
 
 import android.os.SystemClock;
 import android.view.View;
+import android.widget.FrameLayout;
 
 public abstract class OnSingleClickListener implements View.OnClickListener{
 
     //중복 클릭 방지 시간 설정 ( 해당 시간 이후에 다시 클릭 가능 )
     private static final long MIN_CLICK_INTERVAL = 600;
     private long mLastClickTime = 0;
+    FrameLayout frameLayout;
 
     public abstract void onSingleClick(View v);
 

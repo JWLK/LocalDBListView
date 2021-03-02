@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +13,9 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -73,12 +76,19 @@ public class UserListViewAdapter extends BaseAdapter {
             view = inflater.inflate( R.layout.listitem_account, viewGroup, false);
         }
 
+        LinearLayout editMode_disable = view.findViewById(R.id.editMode_disable);
+        LinearLayout editMode_enable = view.findViewById(R.id.editMode_enable);
+
+        ImageButton checked = view.findViewById(R.id.button_UserPanel_checked);
+        Button buttonSelect = view.findViewById(R.id.button_UserPanel_select);
+        Button buttonEdit = view.findViewById(R.id.button_UserPanel_edit);
+        Button buttonDelete = view.findViewById(R.id.button_UserPanel_delete);
+
         // 화면에 표시될 View(Layout이 inflate된)으로부터 위젯에 대한 참조 획득
         ImageView profile = (ImageView) view.findViewById(R.id.profile_image) ;
         TextView name = (TextView) view.findViewById(R.id.user_name) ;
         TextView age = (TextView) view.findViewById(R.id.user_age) ;
         TextView date = (TextView) view.findViewById(R.id.user_regist_date) ;
-        FrameLayout background = view.findViewById(R.id.list_background);
 
         // Data Set(listViewItemList)에서 position에 위치한 데이터 참조 획득
         UserListViewModel userListViewModel = userListViewModelArrayList.get(position);
@@ -89,28 +99,40 @@ public class UserListViewAdapter extends BaseAdapter {
         age.setText(userListViewModel.getAge());
         date.setText(userListViewModel.getDate());
 
-        if(MainActivity.sharedPreferences.getInt("USER_ID",0) == position){
-            background.setBackground(ContextCompat.getDrawable(context, R.drawable.dotted_line_border_style00));
+        if(!MainActivity.sharedPreferences.getBoolean("USER_MODE",false)) {
+            editMode_disable.setVisibility(View.VISIBLE);
+            editMode_enable.setVisibility(View.GONE);
+        } else {
+            editMode_disable.setVisibility(View.GONE);
+            editMode_enable.setVisibility(View.VISIBLE);
         }
 
-        // 화면에 클릭할 수 있는 버튼 이벤트 정의
-        Button buttonSelect = view.findViewById(R.id.button_UserPanel_select);
-        Button buttonEdit = view.findViewById(R.id.button_UserPanel_edit);
+        if(MainActivity.sharedPreferences.getInt("USER_POSITION",0) == position){
+            checked.setVisibility(View.VISIBLE);
+            buttonSelect.setVisibility(View.GONE);
+        } else {
+            checked.setVisibility(View.GONE);
+            buttonSelect.setVisibility(View.VISIBLE);
+        }
+
 
         // 아이템 내 각 버튼 포지션 태그 정의
         buttonSelect.setTag(position);
         buttonEdit.setTag(position);
+        buttonDelete.setTag(position);
 
         // 온클릭 리스너 연결
         buttonSelect.setOnClickListener(onClickListenerSelect);
         buttonEdit.setOnClickListener(onClickListenerEdit);
+        buttonDelete.setOnClickListener(onClickListenerDelete);
 
         return view;
     }
 
-    public void addItem(String name, String age, String date, Drawable profile) {
+    public void addItem(int userId, String name, String age, String date, Drawable profile) {
 
         UserListViewModel item = new UserListViewModel();
+        item.setId(userId);
         item.setName(name);
         item.setAge(age);
         item.setDate(date);
@@ -133,17 +155,19 @@ public class UserListViewAdapter extends BaseAdapter {
             // Data Set(listViewItemList)에서 position에 위치한 데이터 참조 획득
             UserListViewModel userListViewModel = userListViewModelArrayList.get(position);
 
-            Toast.makeText(context, "Position Select : " + position , Toast.LENGTH_SHORT).show();
+            // Toast.makeText(context, "Position Select : " + position , Toast.LENGTH_SHORT).show();
 
             //*SharePreference
             SharedPreferences.Editor editor = MainActivity.sharedPreferences.edit();
             editor.putBoolean("USER_ENABLE", true);
-            editor.putInt("USER_ID", position);
+            editor.putInt("USER_POSITION", position);
+            editor.putInt("USER_ID", userListViewModel.getId());
             editor.putString("USER_NAME", userListViewModel.getName());
             editor.putString("USER_AGE", userListViewModel.getAge());
             editor.putString("USER_DATE", userListViewModel.getDate());
             editor.apply();
             //((Activity)context).finish();
+            notifyDataSetChanged();
 
         }
     };
@@ -153,9 +177,22 @@ public class UserListViewAdapter extends BaseAdapter {
         public void onSingleClick(View v) {
             Context context = v.getContext();
             int position = Integer.parseInt( (v.getTag().toString()) );
-            Toast.makeText(context, "Position Edit : " + position , Toast.LENGTH_SHORT).show();
+            // Toast.makeText(context, "Position Edit : " + position , Toast.LENGTH_SHORT).show();
             set_dialogView_UserEdit(context, position);
 
+        }
+    };
+
+    Button.OnClickListener onClickListenerDelete = new OnSingleClickListener() {
+        @Override
+        public void onSingleClick(View v) {
+            Context context = v.getContext();
+            int position = Integer.parseInt( (v.getTag().toString()) );
+            UserListViewModel userListViewModel = userListViewModelArrayList.get(position);
+            // Toast.makeText(context, "Position Edit : " + position , Toast.LENGTH_SHORT).show();
+            helper.DeleteUserListDB(userListViewModel.getId());
+            userListViewModelArrayList.remove(position);
+            notifyDataSetChanged();
         }
     };
 
@@ -203,6 +240,14 @@ public class UserListViewAdapter extends BaseAdapter {
 
                 helper.UpdateUserListDB(userListViewModel, Integer.toString(position + 1));
                 userListViewModelArrayList.set(position, userListViewModel);
+
+                if(MainActivity.sharedPreferences.getInt("USER_POSITION",0) == position){
+                    SharedPreferences.Editor editor = MainActivity.sharedPreferences.edit();
+                    editor.putString("USER_NAME", userName);
+                    editor.putString("USER_AGE", userAge);
+                    editor.putString("USER_DATE", userDate);
+                    editor.apply();
+                }
 
                 notifyDataSetChanged();
 

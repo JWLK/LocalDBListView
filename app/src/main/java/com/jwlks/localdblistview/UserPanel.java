@@ -92,6 +92,21 @@ public class UserPanel extends AppCompatActivity {
             }
         });
 
+        Button buttonUserEdit = findViewById(R.id.button_UserPanel_editUser);
+        buttonUserEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SharedPreferences.Editor editor = MainActivity.sharedPreferences.edit();
+                if(!MainActivity.sharedPreferences.getBoolean("USER_MODE",false)) {
+                    editor.putBoolean("USER_MODE", true);
+                } else {
+                    editor.putBoolean("USER_MODE", false);
+                }
+                editor.apply();
+                userAdapter.notifyDataSetChanged();
+            }
+        });
+
         Button buttonUserDeselect = findViewById(R.id.button_UserPanel_deselect);
         buttonUserDeselect.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -102,6 +117,7 @@ public class UserPanel extends AppCompatActivity {
                 editor.apply();
                 MainActivity.checkUserSetting = MainActivity.sharedPreferences.getBoolean("USER_ENABLE", false);
                 Log.d("USER_ENABLE", "Value : " + MainActivity.checkUserSetting);
+                userAdapter.notifyDataSetChanged();
             }
         });
     }
@@ -141,10 +157,13 @@ public class UserPanel extends AppCompatActivity {
                     } else if (editTextUserAge.getText().toString().equals("") || editTextUserAge.getText().toString() == null){
                         Toast.makeText(context, "Please Input User Age", Toast.LENGTH_SHORT).show();
                     } else {
-                        helper.InsertUserListDB(userListViewModel);
+                        userListViewModel.setId(helper.InsertUserListDB(userListViewModel));
                         userAdapter.addModel(userListViewModel);
                         userAdapter.notifyDataSetChanged();
                         listViewHeightSet(userAdapter, userListView);
+
+                        editTextUserName.setText("");
+                        editTextUserAge.setText("");
                     }
                     baseDialogUserAdd.dismiss(); // 다이얼로그 닫기
                 } else {
@@ -171,7 +190,7 @@ public class UserPanel extends AppCompatActivity {
     UserListViewAdapter setUserAdapter(Context context){
         UserListViewAdapter userListViewAdapter = new UserListViewAdapter(context);
         Cursor cursor = null;
-        String userId;
+        int userId;
         String userName;
         String userAge;
         String userDate;
@@ -182,13 +201,14 @@ public class UserPanel extends AppCompatActivity {
             if (cursor != null) {
                 isUserExist = true;
                 while (cursor.moveToNext()) {
-                    userId = cursor.getString(cursor.getColumnIndex("USER_ID"));
+                    userId = cursor.getInt(cursor.getColumnIndex("USER_ID"));
                     userName = cursor.getString(cursor.getColumnIndex("USER_NAME"));
                     userAge = cursor.getString(cursor.getColumnIndex("USER_AGE"));
                     userDate = cursor.getString(cursor.getColumnIndex("USER_DATE"));
                     userProfile = cursor.getString(cursor.getColumnIndex("USER_PROFILE"));
                     Drawable userProfileDrawable = ContextCompat.getDrawable(context, R.drawable.ic_user);
                     userListViewAdapter.addItem(
+                            userId,
                             userName,
                             userAge,
                             userDate,

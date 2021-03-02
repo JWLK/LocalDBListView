@@ -175,7 +175,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:visibility="gone"
+            android:visibility="visible"
             android:id="@+id/user_exist_data_view"
             android:orientation="vertical"
             android:layout_width="match_parent"

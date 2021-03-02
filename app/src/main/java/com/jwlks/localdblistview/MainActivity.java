@@ -80,12 +80,15 @@ public class MainActivity extends AppCompatActivity {
             userExist.setVisibility(View.GONE);
             userExistDataView.setVisibility(View.GONE);
 
-            //textViewUserName.setText(SharedPreferences.getString("USER_NAME"));
         } else {
             Log.d("USER_ENABLE", "Value : " + checkUserSetting);
             userNotExist.setVisibility(View.GONE);
             userExist.setVisibility(View.VISIBLE);
             userExistDataView.setVisibility(View.VISIBLE);
+
+            textViewUserName.setText(sharedPreferences.getString("USER_NAME", ""));
+            textViewUserAge.setText(sharedPreferences.getString("USER_AGE", ""));
+            textViewUserDate.setText(sharedPreferences.getString("USER_DATE", ""));
         }
 
     }
@@ -96,6 +99,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getApplication(), UserPanel.class)); //로딩이 끝난 후, MainActivity 이동
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putBoolean("USER_MODE", false);
+                editor.apply();
             }
         });
     }

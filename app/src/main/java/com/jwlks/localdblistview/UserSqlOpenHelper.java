@@ -9,6 +9,8 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
+import java.util.Optional;
+
 public class UserSqlOpenHelper extends SQLiteOpenHelper {
     private static final String USER_TABLE= "USER_TABLE";
 
@@ -48,7 +50,7 @@ public class UserSqlOpenHelper extends SQLiteOpenHelper {
     }
 
 
-    public void InsertUserListDB(UserListViewModel model) {
+    public int InsertUserListDB(UserListViewModel model) {
         ContentValues contentValues = new ContentValues();
         contentValues.put("USER_NAME", model.getName());
         contentValues.put("USER_AGE", model.getAge());
@@ -56,6 +58,7 @@ public class UserSqlOpenHelper extends SQLiteOpenHelper {
         contentValues.put("USER_PROFILE", model.getProfile().toString());
         long createUserId = getWritableDatabase().insert("USER_TABLE", null, contentValues);
         Log.d("DB_Insert", "id : " + createUserId);
+        return Optional.ofNullable(createUserId).orElse(0L).intValue();
     }
 
     public void UpdateUserListDB(UserListViewModel model, String position) {
@@ -68,6 +71,13 @@ public class UserSqlOpenHelper extends SQLiteOpenHelper {
         contentValues.put("USER_PROFILE", model.getProfile().toString());
         long createUserId = getWritableDatabase().update("USER_TABLE", contentValues, "USER_ID = ?", updateUserID);
         Log.d("DB_Update", "id : " + createUserId);
+    }
+
+    public void DeleteUserListDB(int userId) {
+        String updateUserID[] = { Integer.toString(userId) };
+
+        long createUserId = getWritableDatabase().delete("USER_TABLE","USER_ID = " + userId, null);
+        Log.d("DB_Delete", "id : " + userId);
     }
 
     public void SearchUserListDB() {

@@ -132,10 +132,10 @@ public class UserListViewAdapter extends BaseAdapter {
         return view;
     }
 
-    public void addItem(int userId, String name, String age, String date, Drawable profile) {
+    public void addItem(int id, String name, String age, String date, Drawable profile) {
 
         UserListViewModel item = new UserListViewModel();
-        item.setId(userId);
+        item.setId(id);
         item.setName(name);
         item.setAge(age);
         item.setDate(date);

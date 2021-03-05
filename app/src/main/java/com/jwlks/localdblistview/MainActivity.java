@@ -37,6 +37,9 @@ import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
 
+    Context context;
+
+    /*sharePreferences*/
     public static SharedPreferences sharedPreferences;
     public static Boolean checkUserSetting;
     LinearLayout userNotExist;
@@ -46,13 +49,29 @@ public class MainActivity extends AppCompatActivity {
     TextView textViewUserAge;
     TextView textViewUserDate;
 
+    /*DB Setting*/
+    SQLiteDatabase tempDB;
+    TempSqlOpenHelper helper = null;
+
+    /*Temp List View*/
+    LinearLayout tempNotExistNone;
+    LinearLayout tempExistListView;
+
+    TempListViewModel tempListViewModel;
+    TempListViewAdapter tempAdapter;
+    ListView tempListView;
+
+    Boolean isTempExist = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        sharedPreferences = getSharedPreferences("initReference", MODE_PRIVATE);
+        context = this;
 
+        /*sharePreferences*/
+        sharedPreferences = getSharedPreferences("initReference", MODE_PRIVATE);
         checkUserSetting = sharedPreferences.getBoolean("USER_ENABLE", false);
 
         Log.d("USER SETTING", "SETTING : " + checkUserSetting);
@@ -65,6 +84,16 @@ public class MainActivity extends AppCompatActivity {
         textViewUserAge = findViewById(R.id.user_age);
         textViewUserDate = findViewById(R.id.user_regist_date);
 
+        /*DB Setting*/
+        helper = new TempSqlOpenHelper(this, "tempList.db",null,1);
+        tempDB = helper.getWritableDatabase();
+
+        /*Temp List Adapter*/
+        tempNotExistNone = findViewById(R.id.Linear_TempPanel_none);
+        tempExistListView = findViewById(R.id.Linear_TempPanel_listView);
+        tempAdapter = setTempAdapter(getBaseContext());
+        tempListView = setListViewTemp("temp", tempAdapter, (Activity)this);
+        listViewHeightSet(tempAdapter, tempListView);
 
         buttonEvent(getBaseContext());
 
@@ -104,6 +133,83 @@ public class MainActivity extends AppCompatActivity {
                 editor.apply();
             }
         });
+    }
+
+    void setTempData(String tempValue, String tempTime, String tempDate) {
+        long now = System.currentTimeMillis();
+        Date dateOrigin = new Date(now);
+        SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm:ss a");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd - E");
+
+        tempListViewModel = new TempListViewModel();
+        tempListViewModel.setUserId(MainActivity.sharedPreferences.getInt("USER_ID", 0) );
+        tempListViewModel.setTempValue(tempValue);
+        tempListViewModel.setTime(tempTime);
+        tempListViewModel.setDate(tempDate);
+        tempListViewModel.setId(helper.InsertTempListDB(tempListViewModel));
+
+        tempAdapter.addModel(tempListViewModel);
+        tempAdapter.notifyDataSetChanged();
+
+        listViewHeightSet(tempAdapter, tempListView);
+    }
+
+
+    /*List View Adapter*/
+    TempListViewAdapter setTempAdapter(Context context) {
+        TempListViewAdapter tempListViewAdapter = new TempListViewAdapter(context);
+        Cursor cursor = null;
+        int tempId;
+        int userId;
+        String tempValue;
+        String tempTime;
+        String tempDate;
+
+        try {
+            cursor = tempDB.query("TEMP_TABLE", null, null, null, null, null, null);
+            if (cursor != null) {
+                isTempExist = true;
+
+                while (cursor.moveToNext()) {
+                    tempId = cursor.getInt(cursor.getColumnIndex("TEMP_ID"));
+                    userId = cursor.getInt(cursor.getColumnIndex("USER_ID"));
+                    tempValue = cursor.getString(cursor.getColumnIndex("TEMP_VALUE"));
+
+                }
+
+            } else {
+                isTempExist = false;
+            }
+        } finally {
+            if(cursor != null) {
+                cursor.close();
+            }
+        }
+    }
+
+    /*List View Setting */
+    ListView setListViewTemp(String part, TempListViewAdapter tempListViewAdapter, Activity activity) {
+        ListView listView;
+        String layoutId = "list_view_"+part;
+        int resID = getResources().getIdentifier(layoutId, "id", activity.getPackageName());
+        listView = (ListView) findViewById(resID);
+        listView.setVerticalScrollBarEnabled(false);
+        listView.setAdapter(tempListViewAdapter);
+        return listView;
+    }
+
+    private static void listViewHeightSet(BaseAdapter listAdapter, ListView listView){
+        int totalHeight = 0;
+        for (int i = 0; i < listAdapter.getCount(); i++){
+            View listItem = listAdapter.getView(i, null, listView);
+            listItem.measure(0, 0);
+            totalHeight += listItem.getMeasuredHeight();
+        }
+
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
+        listView.setLayoutParams(params);
+
     }
 
 }

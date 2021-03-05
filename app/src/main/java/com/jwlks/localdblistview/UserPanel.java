@@ -45,12 +45,13 @@ public class UserPanel extends AppCompatActivity {
     EditText editTextUserAge;
 
     /*UserList*/
+    LinearLayout userNotExistAddPanel;
+    LinearLayout userExistListView;
+
     UserListViewModel userListViewModel;
     UserListViewAdapter userAdapter;
     ListView userListView;
 
-    LinearLayout userNotExistAddPanel;
-    LinearLayout userExistListView;
     Boolean isUserExist = false;
 
 

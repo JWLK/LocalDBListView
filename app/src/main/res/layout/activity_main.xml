@@ -190,6 +190,8 @@
             </FrameLayout>
 
             <LinearLayout
+                android:id="@+id/Linear_TempPanel_listView"
+                android:visibility="visible"
                 android:layout_width="match_parent"
                 android:layout_height="180dp">
 
@@ -197,7 +199,25 @@
                     android:id="@+id/list_view_temp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:scrollbars="none"/>
+                    android:scrollbars="none" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/Linear_TempPanel_none"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="180dp"
+                android:gravity="center">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="Data Not Exist"
+                    android:textSize="14dp"
+                    android:textColor="@color/colorGrayDDD"
+                    android:textStyle="bold"/>
 
             </LinearLayout>
 
@@ -205,9 +225,24 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
+                android:layout_marginVertical="10dp"
                 android:layout_weight="1"
                 android:layout_gravity="top"
                 android:gravity="center">
+
+                <Button
+                    android:id="@+id/button_sample_data_add"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="30dp"
+                    android:paddingVertical="5dp"
+                    android:paddingHorizontal="5dp"
+                    android:background="@color/green_200"
+                    android:scaleType="fitCenter"
+                    android:drawablePadding="5dp"
+                    android:text="Data Add"
+                    android:textSize="12dp"
+                    android:textColor="@color/green_400"/>
 
                 <Button
                     android:id="@+id/button_graph_view"
@@ -224,6 +259,7 @@
                     android:textColor="@color/green_400"/>
 
             </LinearLayout>
+
         </LinearLayout>
 
     </LinearLayout>

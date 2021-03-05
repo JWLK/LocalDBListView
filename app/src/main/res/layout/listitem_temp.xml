@@ -33,7 +33,7 @@
             android:fontFamily="@font/nsq_b"/>
 
         <TextView
-            android:id="@+id/temp_data"
+            android:id="@+id/temp_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="36.5°C"
@@ -52,6 +52,7 @@
         android:gravity="center">
 
         <TextView
+            android:id="@+id/temp_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="10dp"
@@ -61,6 +62,7 @@
             android:fontFamily="@font/nsq_b"/>
 
         <TextView
+            android:id="@+id/temp_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="10dp"

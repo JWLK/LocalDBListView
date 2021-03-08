@@ -34,6 +34,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -57,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
     LinearLayout tempNotExistNone;
     LinearLayout tempExistListView;
 
-    TempListViewModel tempListViewModel;
+    TempListViewModel tempModel;
     TempListViewAdapter tempAdapter;
     ListView tempListView;
 
@@ -93,7 +94,6 @@ public class MainActivity extends AppCompatActivity {
         tempExistListView = findViewById(R.id.Linear_TempPanel_listView);
         tempAdapter = setTempAdapter(getBaseContext());
         tempListView = setListViewTemp("temp", tempAdapter, (Activity)this);
-        listViewHeightSet(tempAdapter, tempListView);
 
         buttonEvent(getBaseContext());
 
@@ -133,13 +133,46 @@ public class MainActivity extends AppCompatActivity {
                 editor.apply();
             }
         });
+
+        Button buttonSampleDataAdd = findViewById(R.id.button_data_normal);
+        buttonSampleDataAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(tempAdapter.getCount() == 0){
+                    TempListViewShowControl(true);
+                }
+                tempModel = setTempData("36.5");
+                tempAdapter.addModel(tempModel);
+                tempAdapter.notifyDataSetChanged();
+
+            }
+        });
     }
 
-    void setTempData(String tempValue, String tempTime, String tempDate) {
+    /*Dev Test Data Setting*/
+
+    /*Lise View Control Function*/
+    void TempListViewShowControl(Boolean isExist) {
+        if(!isExist) {
+            tempNotExistNone.setVisibility(View.VISIBLE);
+            tempExistListView.setVisibility(View.GONE);
+        } else {
+            tempNotExistNone.setVisibility(View.GONE);
+            tempExistListView.setVisibility(View.VISIBLE);
+        }
+    }
+
+    /*Temp Data Add function*/
+    TempListViewModel setTempData(String tempValue) {
+        TempListViewModel tempListViewModel = new TempListViewModel();
         long now = System.currentTimeMillis();
         Date dateOrigin = new Date(now);
-        SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm:ss a");
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd - E");
+        SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm a", new Locale("en", "US"));
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd EE", new Locale("en", "US"));
+
+        String tempTime = timeFormat.format(dateOrigin);
+        String tempDate = dateFormat.format(dateOrigin);
+
 
         tempListViewModel = new TempListViewModel();
         tempListViewModel.setUserId(MainActivity.sharedPreferences.getInt("USER_ID", 0) );
@@ -148,10 +181,7 @@ public class MainActivity extends AppCompatActivity {
         tempListViewModel.setDate(tempDate);
         tempListViewModel.setId(helper.InsertTempListDB(tempListViewModel));
 
-        tempAdapter.addModel(tempListViewModel);
-        tempAdapter.notifyDataSetChanged();
-
-        listViewHeightSet(tempAdapter, tempListView);
+        return tempListViewModel;
     }
 
 
@@ -167,24 +197,35 @@ public class MainActivity extends AppCompatActivity {
 
         try {
             cursor = tempDB.query("TEMP_TABLE", null, null, null, null, null, null);
-            if (cursor != null) {
+            Log.d("TEMP_TABLE", "cursor : " + cursor.getCount());
+            if (cursor.getCount() > 0) {
                 isTempExist = true;
-
                 while (cursor.moveToNext()) {
                     tempId = cursor.getInt(cursor.getColumnIndex("TEMP_ID"));
                     userId = cursor.getInt(cursor.getColumnIndex("USER_ID"));
                     tempValue = cursor.getString(cursor.getColumnIndex("TEMP_VALUE"));
-
+                    tempTime = cursor.getString(cursor.getColumnIndex("TEMP_TIME"));
+                    tempDate = cursor.getString(cursor.getColumnIndex("TEMP_DATE"));
+                    tempListViewAdapter.addItem(
+                            tempId,
+                            userId,
+                            tempValue,
+                            tempTime,
+                            tempDate
+                    );
                 }
-
             } else {
                 isTempExist = false;
             }
+            TempListViewShowControl(isTempExist);
+
         } finally {
-            if(cursor != null) {
+            if (cursor != null) {
                 cursor.close();
             }
         }
+        TempListViewShowControl(isTempExist);
+        return tempListViewAdapter;
     }
 
     /*List View Setting */
@@ -202,7 +243,7 @@ public class MainActivity extends AppCompatActivity {
         int totalHeight = 0;
         for (int i = 0; i < listAdapter.getCount(); i++){
             View listItem = listAdapter.getView(i, null, listView);
-            listItem.measure(0, 0);
+            listItem.measure(0, View.MeasureSpec.UNSPECIFIED);
             totalHeight += listItem.getMeasuredHeight();
         }
 

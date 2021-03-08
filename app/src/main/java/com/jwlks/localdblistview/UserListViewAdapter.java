@@ -28,9 +28,11 @@ import com.jwlks.localdblistview.Util.BaseDialog;
 import com.jwlks.localdblistview.Util.OnSingleClickListener;
 import com.jwlks.localdblistview.Util.showAlert;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 
 public class UserListViewAdapter extends BaseAdapter {
     private ArrayList<UserListViewModel> userListViewModelArrayList = new ArrayList<UserListViewModel>();
@@ -96,11 +98,30 @@ public class UserListViewAdapter extends BaseAdapter {
         // Data Set(listViewItemList)에서 position에 위치한 데이터 참조 획득
         UserListViewModel userListViewModel = userListViewModelArrayList.get(position);
 
+        String checkFormat = "default";
+        SimpleDateFormat convertFormat = null;
+        String convertDate = null;
+        SimpleDateFormat transFormat = new SimpleDateFormat("yyyy.MM.dd");
+
+        try {
+            Date getDate = transFormat.parse(userListViewModel.getDate());
+            if(checkFormat == "default") {
+                convertFormat = new SimpleDateFormat("yyyy.MM.dd", new Locale("ko", "KR"));
+            } else if(checkFormat == "en") {
+                convertFormat = new SimpleDateFormat("MMM dd, yyyy", new Locale("en", "US"));
+            }
+
+            convertDate = convertFormat.format(getDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+
         // 아이템 내 각 위젯에 데이터 반영
         profile.setImageDrawable(userListViewModel.getProfile());
         name.setText(userListViewModel.getName());
         age.setText(userListViewModel.getAge());
-        date.setText(userListViewModel.getDate());
+        date.setText(convertDate);
 
         if(!MainActivity.sharedPreferences.getBoolean("USER_MODE",false)) {
             editMode_disable.setVisibility(View.VISIBLE);
@@ -200,6 +221,9 @@ public class UserListViewAdapter extends BaseAdapter {
                     .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             // Toast.makeText(context, "Position Edit : " + position , Toast.LENGTH_SHORT).show();
+                            if(getCount() == 1) {
+                                UserPanel.UserListViewShowControl(UserPanel.activity,false);
+                            }
                             helper.DeleteUserListDB(userListViewModel.getId());
                             userListViewModelArrayList.remove(position);
                             if(MainActivity.sharedPreferences.getInt("USER_POSITION",0) == position){

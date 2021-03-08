@@ -88,15 +88,21 @@ public class TempListViewAdapter extends BaseAdapter {
 
         if( dataDouble >= minTempNormal && dataDouble <= maxTempNormal ) {
             tempType = "Normal"; // SET LANGUAGE SELECT CODE // Lang.getStringByLocal(contextMain, R.string.temp_info_ready, MainActivity.langCode)
+            temp_type.setTextColor(ContextCompat.getColor(context, R.color.colorNormal));
+            temp_value.setTextColor(ContextCompat.getColor(context, R.color.colorNormal));
         } else if(dataDouble >= minTempMildFever && dataDouble <= alertTemp ) {
-            tempType = "Mild Fever";//Lang.getStringByLocal(contextMain, R.string.temp_info_ready, MainActivity.langCode)
+            tempType = "Mild Fever";//Lang.getStringByLocal(contextMain, R.string.temp_info_ready, MainActivity.langCode)\
+            temp_type.setTextColor(ContextCompat.getColor(context, R.color.colorMildFever));
+            temp_value.setTextColor(ContextCompat.getColor(context, R.color.colorMildFever));
         } else if(dataDouble >= minTempHighFever) {
             tempType = "High Fever";
+            temp_type.setTextColor(ContextCompat.getColor(context, R.color.colorHighFever));
+            temp_value.setTextColor(ContextCompat.getColor(context, R.color.colorHighFever));
         }
 
         // 아이템 내 각 위젯에 데이터 반영
         temp_type.setText(tempType);
-        temp_value.setText(tempListViewModel.getTempValue());
+        temp_value.setText(tempListViewModel.getTempValue() + "°C");
         temp_time.setText(tempListViewModel.getTime());
         temp_date.setText(tempListViewModel.getDate());
 

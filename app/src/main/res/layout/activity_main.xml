@@ -193,19 +193,20 @@
                 android:id="@+id/Linear_TempPanel_listView"
                 android:visibility="visible"
                 android:layout_width="match_parent"
-                android:layout_height="180dp">
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="10dp">
 
                 <ListView
                     android:id="@+id/list_view_temp"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="200dp"
                     android:scrollbars="none" />
 
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/Linear_TempPanel_none"
-                android:visibility="gone"
+                android:visibility="visible"
                 android:layout_width="match_parent"
                 android:layout_height="180dp"
                 android:gravity="center">
@@ -224,25 +225,10 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_height="30dp"
                 android:layout_marginVertical="10dp"
-                android:layout_weight="1"
                 android:layout_gravity="top"
                 android:gravity="center">
-
-                <Button
-                    android:id="@+id/button_sample_data_add"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginEnd="30dp"
-                    android:paddingVertical="5dp"
-                    android:paddingHorizontal="5dp"
-                    android:background="@color/green_200"
-                    android:scaleType="fitCenter"
-                    android:drawablePadding="5dp"
-                    android:text="Data Add"
-                    android:textSize="12dp"
-                    android:textColor="@color/green_400"/>
 
                 <Button
                     android:id="@+id/button_graph_view"
@@ -257,6 +243,74 @@
                     android:text="Graph View"
                     android:textSize="12dp"
                     android:textColor="@color/green_400"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_marginVertical="10dp"
+                android:layout_gravity="top"
+                android:gravity="start">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Sample Data"
+                    android:layout_marginVertical="10dp"/>
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center">
+
+                    <Button
+                        android:visibility="visible"
+                        android:id="@+id/button_data_normal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginHorizontal="10dp"
+                        android:paddingVertical="5dp"
+                        android:paddingHorizontal="5dp"
+                        android:background="@color/colorNormal"
+                        android:scaleType="fitCenter"
+                        android:drawablePadding="5dp"
+                        android:text="Normal"
+                        android:textSize="12dp"
+                        android:textColor="@color/white"/>
+                    <Button
+                        android:visibility="visible"
+                        android:id="@+id/button_data_mild"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginHorizontal="10dp"
+                        android:paddingVertical="5dp"
+                        android:paddingHorizontal="5dp"
+                        android:background="@color/colorMildFever"
+                        android:scaleType="fitCenter"
+                        android:drawablePadding="5dp"
+                        android:text="Mild Fever"
+                        android:textSize="12dp"
+                        android:textColor="@color/white"/>
+                    <Button
+                        android:visibility="visible"
+                        android:id="@+id/button_data_high"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginHorizontal="10dp"
+                        android:paddingVertical="5dp"
+                        android:paddingHorizontal="5dp"
+                        android:background="@color/colorHighFever"
+                        android:scaleType="fitCenter"
+                        android:drawablePadding="5dp"
+                        android:text="High Fever"
+                        android:textSize="12dp"
+                        android:textColor="@color/white"/>
+
+                </LinearLayout>>
+
 
             </LinearLayout>
 

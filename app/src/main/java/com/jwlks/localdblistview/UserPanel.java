@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -31,11 +32,13 @@ import java.util.Date;
 
 public class UserPanel extends AppCompatActivity {
 
+    static Activity activity;
     Context context;
 
     /*DB Setting*/
     SQLiteDatabase userDB;
     UserSqlOpenHelper helper = null;
+    Cursor cursor = null;
 
     /*User Dialog*/
     BaseDialog baseDialogUserAdd;
@@ -45,9 +48,6 @@ public class UserPanel extends AppCompatActivity {
     EditText editTextUserAge;
 
     /*UserList*/
-    LinearLayout userNotExistAddPanel;
-    LinearLayout userExistListView;
-
     UserListViewModel userListViewModel;
     UserListViewAdapter userAdapter;
     ListView userListView;
@@ -60,6 +60,7 @@ public class UserPanel extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_panel);
 
+        activity = this;
         context = this;
 
         /*DB Setting*/
@@ -76,8 +77,6 @@ public class UserPanel extends AppCompatActivity {
 
 
         /*User List Adapter*/
-        userNotExistAddPanel = findViewById(R.id.Linear_UserPanel_addView);
-        userExistListView = findViewById(R.id.Linear_UserPanel_listView);
         userAdapter = setUserAdapter(getBaseContext());
         userListView = setListViewUser("user", userAdapter, (Activity)this);
         listViewHeightSet(userAdapter, userListView);
@@ -86,7 +85,27 @@ public class UserPanel extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+//        cursor = userDB.query("USER_TABLE", null, null, null, null, null, null);
+//        if (cursor.getCount() == 0) {
+//            UserListViewShowControl(false);
+//        } else {
+//            UserListViewShowControl(true);
+//        }
+
+    }
+
+
     void buttonEvent(Context context) {
+        FrameLayout frameLayoutUserAdd = findViewById(R.id.frame_UserPanel_addUser);
+        frameLayoutUserAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                show_dialogView_UserAdd(context);
+            }
+        });
         ImageButton buttonUserAdd = findViewById(R.id.button_UserPanel_addUser);
         buttonUserAdd.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,7 +119,7 @@ public class UserPanel extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(userAdapter.getCount() == 0){
-                    showAlert.set(UserPanel.this, "Please add users", "It can be used after user registration.");
+                    showAlert.set(activity, "Please add users", "It can be used after user registration.");
                 } else {
                     SharedPreferences.Editor editor = MainActivity.sharedPreferences.edit();
                     if(!MainActivity.sharedPreferences.getBoolean("USER_MODE",false)) {
@@ -167,6 +186,7 @@ public class UserPanel extends AppCompatActivity {
                     editor.putBoolean("USER_ENABLE", false);
                     editor.putInt("USER_POSITION", -1);
                     editor.apply();
+                    UserListViewShowControl(activity, true);
                 }
 
                 if(userAdapter.getCount() < 5){
@@ -193,7 +213,9 @@ public class UserPanel extends AppCompatActivity {
     }
 
     /*Lise View Control Function*/
-    void UserListViewShowControl(Boolean isExist) {
+    public static void UserListViewShowControl(Activity activity, Boolean isExist) {
+        LinearLayout userNotExistAddPanel = activity.findViewById(R.id.Linear_UserPanel_addView);
+        LinearLayout userExistListView = activity.findViewById(R.id.Linear_UserPanel_listView);
         if(!isExist) {
             userNotExistAddPanel.setVisibility(View.VISIBLE);
             userExistListView.setVisibility(View.GONE);
@@ -207,7 +229,6 @@ public class UserPanel extends AppCompatActivity {
     /*List View Adapter*/
     UserListViewAdapter setUserAdapter(Context context){
         UserListViewAdapter userListViewAdapter = new UserListViewAdapter(context);
-        Cursor cursor = null;
         int userId;
         String userName;
         String userAge;
@@ -216,7 +237,7 @@ public class UserPanel extends AppCompatActivity {
 
         try {
             cursor = userDB.query("USER_TABLE", null, null, null, null, null, null);
-            if (cursor != null) {
+            if (cursor.getCount() > 0) {
                 isUserExist = true;
                 while (cursor.moveToNext()) {
                     userId = cursor.getInt(cursor.getColumnIndex("USER_ID"));
@@ -236,7 +257,7 @@ public class UserPanel extends AppCompatActivity {
             } else {
                 isUserExist = false;
             }
-            UserListViewShowControl(isUserExist);
+            UserListViewShowControl(activity, isUserExist);
 
         } finally {
             if (cursor != null) {

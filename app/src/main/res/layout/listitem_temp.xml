@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/list_background"
     android:layout_width="match_parent"
-    android:layout_height="50dp"
+    android:layout_height="70dp"
     android:background="@color/white"
     android:paddingVertical="0dp"
     android:paddingHorizontal="0dp"
@@ -29,16 +29,16 @@
             android:layout_height="wrap_content"
             android:text="Normal"
             android:textColor="@color/colorNormal"
-            android:textSize="10dp"
+            android:textSize="14dp"
             android:fontFamily="@font/nsq_b"/>
 
         <TextView
             android:id="@+id/temp_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="36.5°C"
+            android:text="36.5 °C"
             android:textColor="@color/colorNormal"
-            android:textSize="24dp"
+            android:textSize="34dp"
             android:fontFamily="@font/nsq_b"
             android:letterSpacing="-0.05" />
 
@@ -49,26 +49,25 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:gravity="center">
+        android:gravity="center|end">
 
         <TextView
             android:id="@+id/temp_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="10dp"
+            android:layout_marginHorizontal="20dp"
             android:text="11:45 AM"
             android:textColor="@color/colorDark333"
-            android:textSize="21dp"
+            android:textSize="24dp"
             android:fontFamily="@font/nsq_b"/>
 
         <TextView
             android:id="@+id/temp_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="10dp"
-            android:text="2021.01.04 - Mon."
+            android:text="2021.01.04 Mon"
             android:textColor="@color/colorDark333"
-            android:textSize="16dp"
+            android:textSize="12dp"
             android:fontFamily="@font/nsq_r"/>
 
 

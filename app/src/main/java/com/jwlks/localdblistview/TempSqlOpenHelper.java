@@ -55,7 +55,7 @@ public class TempSqlOpenHelper extends SQLiteOpenHelper {
         contentValues.put("USER_ID", model.getUserId());
         contentValues.put("TEMP_VALUE", model.getTempValue());
         contentValues.put("TEMP_TIME", model.getTime());
-        contentValues.put("TEMP_DATE", model.getId());
+        contentValues.put("TEMP_DATE", model.getDate());
         long createTempId = getWritableDatabase().insert("TEMP_TABLE", null, contentValues);
         Log.d("DB_Insert", "id : " + createTempId);
         return Optional.ofNullable(createTempId).orElse(0L).intValue();
@@ -68,7 +68,7 @@ public class TempSqlOpenHelper extends SQLiteOpenHelper {
         contentValues.put("USER_ID", model.getUserId());
         contentValues.put("TEMP_VALUE", model.getTempValue());
         contentValues.put("TEMP_TIME", model.getTime());
-        contentValues.put("TEMP_DATE", model.getId());
+        contentValues.put("TEMP_DATE", model.getDate());
         long createTempId = getWritableDatabase().update("TEMP_TABLE", contentValues, "TEMP_ID = ?", updateTempID);
         Log.d("DB_Update", "id : " + createTempId);
     }

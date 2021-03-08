@@ -1,38 +1,25 @@
 package com.jwlks.localdblistview;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.drawable.Drawable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
 
-import com.jwlks.localdblistview.Util.BaseDialog;
-import com.jwlks.localdblistview.Util.OnSingleClickListener;
-
 import java.util.ArrayList;
 
-public class TempListViewAdapter extends BaseAdapter {
+public class TempListViewDetailAdapter extends BaseAdapter {
     private ArrayList<TempListViewModel> tempListViewModelArrayList = new ArrayList<TempListViewModel>();
 
     /*DB Setting*/
     SQLiteDatabase tempDB;
     TempSqlOpenHelper helper = null;
 
-    public TempListViewAdapter(Context context) {
+    public TempListViewDetailAdapter(Context context) {
         /*DB Setting*/
         helper = new TempSqlOpenHelper(context, "tempList.db",null,1);
         tempDB = helper.getWritableDatabase();
@@ -41,7 +28,7 @@ public class TempListViewAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return 3;
+        return tempListViewModelArrayList.size();
     }
 
     @Override
@@ -106,7 +93,6 @@ public class TempListViewAdapter extends BaseAdapter {
         temp_time.setText(tempListViewModel.getTime());
         temp_date.setText(tempListViewModel.getDate());
 
-        tempListViewModelArrayList.sort(new TempSort(1));
         return view;
     }
 

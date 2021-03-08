@@ -199,7 +199,7 @@
                 <ListView
                     android:id="@+id/list_view_temp"
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
+                    android:layout_height="220dp"
                     android:scrollbars="none" />
 
             </LinearLayout>

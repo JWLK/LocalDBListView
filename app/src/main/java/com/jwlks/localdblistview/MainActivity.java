@@ -134,8 +134,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Button buttonSampleDataAdd = findViewById(R.id.button_data_normal);
-        buttonSampleDataAdd.setOnClickListener(new View.OnClickListener() {
+        Button buttonDataNormal = findViewById(R.id.button_data_normal);
+        buttonDataNormal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(tempAdapter.getCount() == 0){
@@ -143,10 +143,37 @@ public class MainActivity extends AppCompatActivity {
                 }
                 tempModel = setTempData("36.5");
                 tempAdapter.addModel(tempModel);
-                tempAdapter.notifyDataSetChanged();
-
+                //tempAdapter.notifyDataSetChanged();
             }
         });
+
+        Button buttonDataMild = findViewById(R.id.button_data_mild);
+        buttonDataMild.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(tempAdapter.getCount() == 0){
+                    TempListViewShowControl(true);
+                }
+                tempModel = setTempData("37.5");
+                tempAdapter.addModel(tempModel);
+                //tempAdapter.notifyDataSetChanged();
+            }
+        });
+
+        Button buttonDataHigh = findViewById(R.id.button_data_high);
+        buttonDataHigh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(tempAdapter.getCount() == 0){
+                    TempListViewShowControl(true);
+                }
+                tempModel = setTempData("38.4");
+                tempAdapter.addModel(tempModel);
+                //tempAdapter.notifyDataSetChanged();
+            }
+        });
+
+
     }
 
     /*Dev Test Data Setting*/
@@ -173,8 +200,6 @@ public class MainActivity extends AppCompatActivity {
         String tempTime = timeFormat.format(dateOrigin);
         String tempDate = dateFormat.format(dateOrigin);
 
-
-        tempListViewModel = new TempListViewModel();
         tempListViewModel.setUserId(MainActivity.sharedPreferences.getInt("USER_ID", 0) );
         tempListViewModel.setTempValue(tempValue);
         tempListViewModel.setTime(tempTime);

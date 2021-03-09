@@ -149,6 +149,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/button_user_manager"
                 android:orientation="horizontal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -208,7 +209,7 @@
                 android:id="@+id/Linear_TempPanel_none"
                 android:visibility="visible"
                 android:layout_width="match_parent"
-                android:layout_height="180dp"
+                android:layout_height="220dp"
                 android:gravity="center">
 
                 <TextView
@@ -268,10 +269,27 @@
 
                     <Button
                         android:visibility="visible"
-                        android:id="@+id/button_data_normal"
-                        android:layout_width="wrap_content"
+                        android:id="@+id/button_data_measuring"
+                        android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_marginHorizontal="10dp"
+                        android:layout_weight="1"
+                        android:layout_marginHorizontal="5dp"
+                        android:paddingVertical="5dp"
+                        android:paddingHorizontal="5dp"
+                        android:background="@color/colorMeasuring"
+                        android:scaleType="fitCenter"
+                        android:drawablePadding="5dp"
+                        android:text="MSRING"
+                        android:textSize="12dp"
+                        android:textColor="@color/white"/>
+
+                    <Button
+                        android:visibility="visible"
+                        android:id="@+id/button_data_normal"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:layout_marginHorizontal="5dp"
                         android:paddingVertical="5dp"
                         android:paddingHorizontal="5dp"
                         android:background="@color/colorNormal"
@@ -283,9 +301,10 @@
                     <Button
                         android:visibility="visible"
                         android:id="@+id/button_data_mild"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_marginHorizontal="10dp"
+                        android:layout_weight="1"
+                        android:layout_marginHorizontal="5dp"
                         android:paddingVertical="5dp"
                         android:paddingHorizontal="5dp"
                         android:background="@color/colorMildFever"
@@ -297,9 +316,10 @@
                     <Button
                         android:visibility="visible"
                         android:id="@+id/button_data_high"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_marginHorizontal="10dp"
+                        android:layout_weight="1"
+                        android:layout_marginHorizontal="5dp"
                         android:paddingVertical="5dp"
                         android:paddingHorizontal="5dp"
                         android:background="@color/colorHighFever"
@@ -309,7 +329,7 @@
                         android:textSize="12dp"
                         android:textColor="@color/white"/>
 
-                </LinearLayout>>
+                </LinearLayout>
 
 
             </LinearLayout>

@@ -54,14 +54,14 @@ public class TempListViewAdapter extends BaseAdapter {
         // "listview_item" Layout을 inflate하여 convertView 참조 획득.
         if (view == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view = inflater.inflate( R.layout.listitem_temp, viewGroup, false);
+            view = inflater.inflate(R.layout.listitem_temp, viewGroup, false);
         }
 
         // 화면에 표시될 View(Layout이 inflate된)으로부터 위젯에 대한 참조 획득
-        TextView temp_type = (TextView) view.findViewById(R.id.temp_type) ;
-        TextView temp_value = (TextView) view.findViewById(R.id.temp_value) ;
-        TextView temp_time = (TextView) view.findViewById(R.id.temp_time) ;
-        TextView temp_date = (TextView) view.findViewById(R.id.temp_date) ;
+        TextView temp_type = (TextView) view.findViewById(R.id.temp_type);
+        TextView temp_value = (TextView) view.findViewById(R.id.temp_value);
+        TextView temp_time = (TextView) view.findViewById(R.id.temp_time);
+        TextView temp_date = (TextView) view.findViewById(R.id.temp_date);
 
         // 온도 타입 정의
         String tempType = null;
@@ -79,7 +79,11 @@ public class TempListViewAdapter extends BaseAdapter {
 
         dataDouble = Double.parseDouble(tempListViewModel.getTempValue());
 
-        if( dataDouble >= minTempNormal && dataDouble <= maxTempNormal ) {
+        if(dataDouble <= minTempNormal) {
+            tempType = "Measuring"; // SET LANGUAGE SELECT CODE // Lang.getStringByLocal(contextMain, R.string.temp_info_ready, MainActivity.langCode)
+            temp_type.setTextColor(ContextCompat.getColor(context, R.color.colorMeasuring));
+            temp_value.setTextColor(ContextCompat.getColor(context, R.color.colorMeasuring));
+        } else if( dataDouble >= minTempNormal && dataDouble <= maxTempNormal ) {
             tempType = "Normal"; // SET LANGUAGE SELECT CODE // Lang.getStringByLocal(contextMain, R.string.temp_info_ready, MainActivity.langCode)
             temp_type.setTextColor(ContextCompat.getColor(context, R.color.colorNormal));
             temp_value.setTextColor(ContextCompat.getColor(context, R.color.colorNormal));

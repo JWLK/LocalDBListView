@@ -1,4 +1,4 @@
-package com.jwlks.localdblistview;
+package com.jwlks.localdblistview.Account;
 
 import android.content.ContentValues;
 import android.content.Context;

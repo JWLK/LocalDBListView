@@ -1,4 +1,4 @@
-package com.jwlks.localdblistview;
+package com.jwlks.localdblistview.Temp;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -9,6 +9,8 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
+
+import com.jwlks.localdblistview.R;
 
 import java.util.ArrayList;
 

@@ -1,12 +1,10 @@
-package com.jwlks.localdblistview;
+package com.jwlks.localdblistview.Account;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
@@ -24,6 +22,8 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import com.jwlks.localdblistview.MainActivity;
+import com.jwlks.localdblistview.R;
 import com.jwlks.localdblistview.Util.BaseDialog;
 import com.jwlks.localdblistview.Util.showAlert;
 

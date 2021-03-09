@@ -1,37 +1,28 @@
 package com.jwlks.localdblistview;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.jwlks.localdblistview.Util.BaseDialog;
-import com.jwlks.localdblistview.Util.showAlert;
+import com.jwlks.localdblistview.Account.UserPanel;
+import com.jwlks.localdblistview.Temp.TempListViewAdapter;
+import com.jwlks.localdblistview.Temp.TempListViewModel;
+import com.jwlks.localdblistview.Temp.TempSqlOpenHelper;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -94,8 +85,13 @@ public class MainActivity extends AppCompatActivity {
         tempExistListView = findViewById(R.id.Linear_TempPanel_listView);
         tempAdapter = setTempAdapter(getBaseContext());
         tempListView = setListViewTemp("temp", tempAdapter, (Activity)this);
+        tempAdapter.sortIdDesc();
 
         buttonEvent(getBaseContext());
+
+        /*Temp View Controller*/
+
+        /*Graph View Controller*/
 
     }
 
@@ -143,7 +139,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 tempModel = setTempData("36.5");
                 tempAdapter.addModel(tempModel);
-                //tempAdapter.notifyDataSetChanged();
+                tempAdapter.sortIdDesc();
             }
         });
 
@@ -156,7 +152,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 tempModel = setTempData("37.5");
                 tempAdapter.addModel(tempModel);
-                //tempAdapter.notifyDataSetChanged();
+                tempAdapter.sortIdDesc();
             }
         });
 
@@ -169,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 tempModel = setTempData("38.4");
                 tempAdapter.addModel(tempModel);
-                //tempAdapter.notifyDataSetChanged();
+                tempAdapter.sortIdDesc();
             }
         });
 

@@ -1,12 +1,10 @@
-package com.jwlks.localdblistview;
+package com.jwlks.localdblistview.Account;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,18 +13,17 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
 
+import com.jwlks.localdblistview.MainActivity;
+import com.jwlks.localdblistview.R;
 import com.jwlks.localdblistview.Util.BaseDialog;
 import com.jwlks.localdblistview.Util.OnSingleClickListener;
-import com.jwlks.localdblistview.Util.showAlert;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

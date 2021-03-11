@@ -25,7 +25,7 @@ public class TempListViewAdapter extends BaseAdapter {
         /*DB Setting*/
         helper = new TempSqlOpenHelper(context, "tempList.db",null,1);
         tempDB = helper.getWritableDatabase();
-        helper.SearchTempListDB();
+        //helper.SearchTempListDB();
     }
 
     @Override

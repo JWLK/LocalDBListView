@@ -21,6 +21,7 @@ import android.widget.TextView;
 import androidx.core.content.ContextCompat;
 
 import com.jwlks.localdblistview.MainActivity;
+import com.jwlks.localdblistview.MainTempController;
 import com.jwlks.localdblistview.R;
 import com.jwlks.localdblistview.Util.BaseDialog;
 import com.jwlks.localdblistview.Util.OnSingleClickListener;
@@ -50,7 +51,7 @@ public class UserListViewAdapter extends BaseAdapter {
         /*DB Setting*/
         helper = new UserSqlOpenHelper(context, "userList.db",null,1);
         userDB = helper.getWritableDatabase();
-        helper.SearchUserListDB();
+        //helper.SearchUserListDB();
     }
 
     @Override

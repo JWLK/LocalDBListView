@@ -29,11 +29,14 @@ import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
+    AppCompatActivity appCompatActivity;
     Context context;
 
     /*sharePreferences*/
     public static SharedPreferences sharedPreferences;
     public static Boolean checkUserSetting;
+    public static int checkUserIdNumber;
+    int saveUserId = 0;
 
     /*xmlComponent*/
     LinearLayout userNotExist;
@@ -53,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        appCompatActivity = this;
         context = this;
 
         /*sharePreferences*/
@@ -98,6 +102,19 @@ public class MainActivity extends AppCompatActivity {
             textViewUserAge.setText(sharedPreferences.getString("USER_AGE", ""));
             textViewUserDate.setText(sharedPreferences.getString("USER_DATE", ""));
         }
+
+        checkUserIdNumber = sharedPreferences.getInt("USER_ID", 0);
+        if(checkUserIdNumber != saveUserId){
+            Log.d("USER_ID", "Value : " + checkUserIdNumber);
+            saveUserId = checkUserIdNumber;
+            MainTempController.tempAdapter = MainTempController.setTempAdapter(appCompatActivity, MainTempController.tempDB);
+            MainTempController.tempListView = MainTempController.setListViewTemp("temp", MainTempController.tempAdapter, appCompatActivity);
+            MainTempController.tempAdapter.sortIdDesc();
+        } else {
+            Log.d("USER_ID", "Value : " + "NO CHANGE");
+        }
+
+
 
     }
 

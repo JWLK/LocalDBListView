@@ -41,7 +41,7 @@ public class MainTempController {
 
     /*Temp List View*/
     public static TempListViewAdapter tempAdapter = null;
-    ListView tempListView;
+    public static ListView tempListView;
 
     private AppCompatActivity appCompatActivity;
 
@@ -79,7 +79,7 @@ public class MainTempController {
                 if(tempAdapter.getCount() == 0){
                     TempListViewShowControl(appCompatActivity,true);
                 }
-                AddTempData("24.5", tempAdapter, tempHelper);
+                addTempData("24.5", tempAdapter, tempHelper);
             }
         });
 
@@ -90,7 +90,7 @@ public class MainTempController {
                 if(tempAdapter.getCount() == 0){
                     TempListViewShowControl(appCompatActivity,true);
                 }
-                AddTempData("36.5", tempAdapter, tempHelper);
+                addTempData("36.5", tempAdapter, tempHelper);
             }
         });
 
@@ -102,7 +102,7 @@ public class MainTempController {
                     TempListViewShowControl(appCompatActivity,true);
                 }
 
-                AddTempData("37.6", tempAdapter, tempHelper);
+                addTempData("37.6", tempAdapter, tempHelper);
             }
         });
 
@@ -113,13 +113,13 @@ public class MainTempController {
                 if(tempAdapter.getCount() == 0){
                     TempListViewShowControl(appCompatActivity,true);
                 }
-                AddTempData("38.4", tempAdapter, tempHelper);
+                addTempData("38.4", tempAdapter, tempHelper);
             }
         });
 
     }
 
-    static void AddTempData(String tempValue,TempListViewAdapter tempListViewAdapter, TempSqlOpenHelper tempSqlOpenHelper) {
+    static void addTempData(String tempValue,TempListViewAdapter tempListViewAdapter, TempSqlOpenHelper tempSqlOpenHelper) {
         TempListViewModel tempModel = setTempData(tempValue, tempSqlOpenHelper);
         tempListViewAdapter.addModel(tempModel);
         tempListViewAdapter.sortIdDesc();
@@ -170,8 +170,10 @@ public class MainTempController {
         String tempDate;
         Boolean isTempExist = false;
 
+        int selectedUserId = MainActivity.sharedPreferences.getInt("USER_ID", 0);
+
         try {
-            cursor = tempDB.query("TEMP_TABLE", null, null, null, null, null, null);
+            cursor = tempDB.rawQuery("SELECT * FROM TEMP_TABLE WHERE USER_ID = " + selectedUserId, null);
             Log.d("TEMP_TABLE", "cursor : " + cursor.getCount());
             if (cursor.getCount() > 0) {
                 isTempExist = true;
@@ -204,11 +206,11 @@ public class MainTempController {
     }
 
     /*List View Setting */
-    ListView setListViewTemp(String part, TempListViewAdapter tempListViewAdapter, Activity activity) {
+    static ListView setListViewTemp(String part, TempListViewAdapter tempListViewAdapter, Activity activity) {
         ListView listView;
         String layoutId = "list_view_"+part;
-        int resID = appCompatActivity.getResources().getIdentifier(layoutId, "id", activity.getPackageName());
-        listView = (ListView) appCompatActivity.findViewById(resID);
+        int resID = activity.getResources().getIdentifier(layoutId, "id", activity.getPackageName());
+        listView = (ListView) activity.findViewById(resID);
         listView.setVerticalScrollBarEnabled(false);
         listView.setAdapter(tempListViewAdapter);
         return listView;
